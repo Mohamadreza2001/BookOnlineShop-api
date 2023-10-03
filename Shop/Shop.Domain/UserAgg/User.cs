@@ -22,6 +22,9 @@ namespace Shop.Domain.UserAgg
             Email = email;
             Password = password;
             Gender = gender;
+            Roles = new();
+            Wallets = new();
+            Addresses = new();
         }
 
 
@@ -35,7 +38,7 @@ namespace Shop.Domain.UserAgg
         public List<Wallet> Wallets { get; private set; }
         public List<UserAddress> Addresses { get; private set; }
 
-        
+
 
         public static User RegisterUser(string phoneNumber, string email, string password, IDomainUserService domainService)
         {
@@ -76,6 +79,7 @@ namespace Shop.Domain.UserAgg
 
         public void ChargeWallet(Wallet wallet)
         {
+            wallet.UserId = Id;
             Wallets.Add(wallet);
         }
 

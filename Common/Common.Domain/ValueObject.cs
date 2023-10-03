@@ -3,15 +3,12 @@ using System.Reflection;
 
 namespace Common.Domain
 {
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-    public class IgnoreMemberAttribute : Attribute { }
-
-    public class BaseValueObject : IEquatable<BaseValueObject>
+    public class ValueObject : IEquatable<ValueObject>
     {
         private List<PropertyInfo> properties;
         private List<FieldInfo> fields;
 
-        public static bool operator ==(BaseValueObject left, BaseValueObject right)
+        public static bool operator ==(ValueObject left, ValueObject right)
         {
             if (object.Equals(left, null))
             {
@@ -24,12 +21,12 @@ namespace Common.Domain
             return left.Equals(right);
         }
 
-        public static bool operator !=(BaseValueObject left, BaseValueObject right)
+        public static bool operator !=(ValueObject left, ValueObject right)
         {
             return !(left == right);
         }
 
-        public bool Equals(BaseValueObject other)
+        public bool Equals(ValueObject other)
         {
             return Equals(other as object);
         }
