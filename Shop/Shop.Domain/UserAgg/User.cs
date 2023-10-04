@@ -13,7 +13,7 @@ namespace Shop.Domain.UserAgg
 {
     public class User : AggregateRoot
     {
-        public User(string name, string family, string phoneNumber, string email, string password, Gender gender, IDomainUserService domainService)
+        public User(string name, string family, string phoneNumber, string email, string password, Gender gender, IUserDomainService domainService)
         {
             Guard(phoneNumber, email, domainService);
             Name = name;
@@ -40,12 +40,12 @@ namespace Shop.Domain.UserAgg
 
 
 
-        public static User RegisterUser(string phoneNumber, string email, string password, IDomainUserService domainService)
+        public static User RegisterUser(string phoneNumber, string email, string password, IUserDomainService domainService)
         {
             return new User("", "", phoneNumber, email, password, Gender.none, domainService);
         }
 
-        public void Edit(string name, string family, string phoneNumber, string email, Gender gender, IDomainUserService domainService)
+        public void Edit(string name, string family, string phoneNumber, string email, Gender gender, IUserDomainService domainService)
         {
             Guard(phoneNumber, email, domainService);
             Name = name;
@@ -90,7 +90,7 @@ namespace Shop.Domain.UserAgg
             Roles.AddRange(roles);
         }
 
-        public void Guard(string phoneNuber, string email, IDomainUserService domainService)
+        public void Guard(string phoneNuber, string email, IUserDomainService domainService)
         {
             NullOrEmptyDomainDataException.CheckString(phoneNuber, nameof(phoneNuber));
 
