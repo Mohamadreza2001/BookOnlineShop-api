@@ -9,9 +9,10 @@ namespace Shop.Domain.ProductAgg
     public class Product : AggregateRoot
     {
         public Product(string title, string imageName, string description, long categoryId, long subCategoryId,
-            long secondarySubCategoryId, string slug, CeoData ceoData,IProductDomainService domainService)
+            long secondarySubCategoryId, string slug, CeoData ceoData, IProductDomainService domainService)
         {
-            Guard(title, imageName, description, slug, domainService);
+            NullOrEmptyDomainDataException.CheckString(imageName, nameof(imageName));
+            Guard(title, description, slug, domainService);
             Title = title;
             ImageName = imageName;
             Description = description;
@@ -35,18 +36,23 @@ namespace Shop.Domain.ProductAgg
         public List<ProductSpecification> Specifications { get; private set; }
         public List<ProductImage> Images { get; private set; }
 
-        public void Edit(string title, string imageName, string description, long categoryId, long subCategoryId,
+        public void Edit(string title, string description, long categoryId, long subCategoryId,
             long secondarySubCategoryId, string slug, CeoData ceoData, IProductDomainService domainService)
         {
-            Guard(title, imageName, description, slug, domainService);
+            Guard(title, description, slug, domainService);
             Title = title;
-            ImageName = imageName;
             Description = description;
             CategoryId = categoryId;
             SubCategoryId = subCategoryId;
             SecondarySubCategoryId = secondarySubCategoryId;
             Slug = slug.ToSlug();
             CeoData = ceoData;
+        }
+
+        public void SetProductImage(string imageName)
+        {
+            NullOrEmptyDomainDataException.CheckString(imageName, nameof(imageName));
+            ImageName = imageName;
         }
 
         public void AddImage(ProductImage image)
@@ -69,10 +75,9 @@ namespace Shop.Domain.ProductAgg
             Specifications = specifications;
         }
 
-        public void Guard(string title, string imageName, string description, string slug, IProductDomainService domainService)
+        public void Guard(string title, string description, string slug, IProductDomainService domainService)
         {
             NullOrEmptyDomainDataException.CheckString(title, nameof(title));
-            NullOrEmptyDomainDataException.CheckString(imageName, nameof(imageName));
             NullOrEmptyDomainDataException.CheckString(description, nameof(description));
             NullOrEmptyDomainDataException.CheckString(slug, nameof(slug));
 
