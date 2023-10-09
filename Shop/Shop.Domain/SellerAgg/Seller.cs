@@ -1,6 +1,7 @@
 ﻿using Common.Domain;
 using Common.Domain.Exceptions;
 using Shop.Domain.SellerAgg.Enums;
+using Shop.Domain.SellerAgg.Services;
 
 namespace Shop.Domain.SellerAgg
 {
@@ -10,13 +11,15 @@ namespace Shop.Domain.SellerAgg
         {
 
         }
-        public Seller(long userId, string shopName, string nationalCode)
+        public Seller(long userId, string shopName, string nationalCode, ISellerDomainService domainService)
         {
             Guard(shopName, nationalCode);
             UserId = userId;
             ShopName = shopName;
             NationalCode = nationalCode;
             Inventories = new();
+            if (domainService.CheckSellerInfo(this) == false)
+                throw new InvalidDomainDataException("Seller information is not valid");
         }
 
         public long UserId { get; private set; }
@@ -32,9 +35,12 @@ namespace Shop.Domain.SellerAgg
             LastUpdate = DateTime.Now;
         }
 
-        public void Edit(string nationalCode, string shopName)
+        public void Edit(string nationalCode, string shopName, ISellerDomainService domainService)
         {
             Guard(shopName, nationalCode);
+            if(nationalCode!=NationalCode)
+                if(domainService.IsNationalCodeExist(nationalCode))
+                    throw new InvalidDomainDataException("National code belongs to another person");
             NationalCode = nationalCode;
             ShopName = shopName;
         }
