@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Sellers\DeleteInventory\" />
     <Folder Include="SiteEntites\Banner\Create\" />
     <Folder Include="SiteEntites\Banner\Edit\" />
     <Folder Include="SiteEntites\Slider\Create\" />
