@@ -38,8 +38,8 @@ namespace Shop.Domain.SellerAgg
         public void Edit(string nationalCode, string shopName, ISellerDomainService domainService)
         {
             Guard(shopName, nationalCode);
-            if(nationalCode!=NationalCode)
-                if(domainService.IsNationalCodeExist(nationalCode))
+            if (nationalCode != NationalCode)
+                if (domainService.IsNationalCodeExist(nationalCode))
                     throw new InvalidDomainDataException("National code belongs to another person");
             NationalCode = nationalCode;
             ShopName = shopName;
@@ -52,21 +52,12 @@ namespace Shop.Domain.SellerAgg
             Inventories.Add(Item);
         }
 
-        public void EditInventory(SellerInventory newInventory)
+        public void EditInventory(long inventoryId, int count, int price, int? discountPercentage)
         {
-            var currentInventory = Inventories.FirstOrDefault(i => i.Id == newInventory.Id);
+            var currentInventory = Inventories.FirstOrDefault(i => i.Id == inventoryId);
             if (currentInventory == null)
                 throw new NullOrEmptyDomainDataException("Inventory not found");
-            Inventories.Remove(currentInventory);
-            Inventories.Add(newInventory);
-        }
-
-        public void DeleteInventory(long inventoryId)
-        {
-            var oldInventory = Inventories.FirstOrDefault(i => i.Id == inventoryId);
-            if (oldInventory == null)
-                throw new NullOrEmptyDomainDataException("Inventory not found");
-            Inventories.Remove(oldInventory);
+            currentInventory.Edit(count, price, discountPercentage);
         }
 
         public void Guard(string shopName, string nationalCode)
