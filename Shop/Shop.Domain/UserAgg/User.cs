@@ -13,7 +13,8 @@ namespace Shop.Domain.UserAgg
 {
     public class User : AggregateRoot
     {
-        public User(string name, string family, string phoneNumber, string email, string password, Gender gender, IUserDomainService domainService)
+        public User(string name, string family, string phoneNumber, string email, string password, Gender gender,
+            IUserDomainService domainService)
         {
             Guard(phoneNumber, email, domainService);
             Name = name;
@@ -25,6 +26,7 @@ namespace Shop.Domain.UserAgg
             Roles = new();
             Wallets = new();
             Addresses = new();
+            AvatarName = "avatar.png";
         }
 
 
@@ -33,6 +35,7 @@ namespace Shop.Domain.UserAgg
         public string PhoneNumber { get; private set; }
         public string Email { get; private set; }
         public string Password { get; private set; }
+        public string AvatarName { get; private set; }
         public Gender Gender { get; private set; }
         public List<UserRole> Roles { get; private set; }
         public List<Wallet> Wallets { get; private set; }
@@ -53,6 +56,13 @@ namespace Shop.Domain.UserAgg
             PhoneNumber = phoneNumber;
             Email = email;
             Gender = gender;
+        }
+
+        public void SetAvatar(string imageName)
+        {
+            if (string.IsNullOrWhiteSpace(imageName))
+                imageName = "avatar.png";
+            AvatarName = imageName;
         }
 
         public void AddAddress(UserAddress address)
