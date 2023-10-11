@@ -70,13 +70,13 @@ namespace Shop.Domain.UserAgg
             address.UserId = Id;
             Addresses.Add(address);
         }
-        public void EditAddress(UserAddress address)
+        public void EditAddress(UserAddress address, long addressId)
         {
-            var oldAddress = Addresses.FirstOrDefault(i => i.Id == address.Id);
+            var oldAddress = Addresses.FirstOrDefault(i => i.Id == addressId);
             if (oldAddress == null)
                 throw new NullOrEmptyDomainDataException("Address not found");
-            Addresses.Remove(oldAddress);
-            Addresses.Add(address);
+            oldAddress.Edit(address.Province, address.City, address.PostalCode, address.PostAddress, address.PhoneNumber,
+                address.Name, address.Family, address.NationalCode);
         }
 
         public void DeleteAddress(long Id)
