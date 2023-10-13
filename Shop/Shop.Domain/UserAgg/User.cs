@@ -1,5 +1,6 @@
 ﻿using Common.Domain;
 using Common.Domain.Exceptions;
+using Common.Domain.ValueObjects;
 using Shop.Domain.UserAgg.Enums;
 using Shop.Domain.UserAgg.Services;
 using System;
@@ -43,9 +44,9 @@ namespace Shop.Domain.UserAgg
 
 
 
-        public static User RegisterUser(string phoneNumber, string email, string password, IUserDomainService domainService)
+        public static User RegisterUser(string phoneNumber, string password, IUserDomainService domainService)
         {
-            return new User("", "", phoneNumber, email, password, Gender.none, domainService);
+            return new User("", "", phoneNumber, null, password, Gender.none, domainService);
         }
 
         public void Edit(string name, string family, string phoneNumber, string email, Gender gender, IUserDomainService domainService)
