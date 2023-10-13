@@ -19,7 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{DDB261
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Domain", "Common\Common.Domain\Common.Domain.csproj", "{24954ED8-4568-4CB3-BD73-422943DE6C0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Application", "Common\Common.Application\Common.Application.csproj", "{5AE898CE-FAEA-426A-BC18-FFCEBDC6E640}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Application", "Common\Common.Application\Common.Application.csproj", "{5AE898CE-FAEA-426A-BC18-FFCEBDC6E640}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Query", "Common\Common.Query\Common.Query.csproj", "{5972ACBB-10A9-4A0A-9070-5F0DAF2E52D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,10 @@ Global
 		{5AE898CE-FAEA-426A-BC18-FFCEBDC6E640}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AE898CE-FAEA-426A-BC18-FFCEBDC6E640}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AE898CE-FAEA-426A-BC18-FFCEBDC6E640}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5972ACBB-10A9-4A0A-9070-5F0DAF2E52D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5972ACBB-10A9-4A0A-9070-5F0DAF2E52D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5972ACBB-10A9-4A0A-9070-5F0DAF2E52D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5972ACBB-10A9-4A0A-9070-5F0DAF2E52D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{4BC403C5-C62F-45B4-996F-41B4DAC89995} = {BCE3D277-1FDF-41AC-9AEE-897D8678AE47}
 		{24954ED8-4568-4CB3-BD73-422943DE6C0E} = {DDB26146-82F1-4C39-9AB3-41C3C47939A0}
 		{5AE898CE-FAEA-426A-BC18-FFCEBDC6E640} = {DDB26146-82F1-4C39-9AB3-41C3C47939A0}
+		{5972ACBB-10A9-4A0A-9070-5F0DAF2E52D1} = {DDB26146-82F1-4C39-9AB3-41C3C47939A0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30C17EE2-786A-45E3-9AC8-028B7D60B87B}
