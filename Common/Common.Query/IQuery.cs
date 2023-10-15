@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Common.Query.Filter;
+using MediatR;
 
 namespace Common.Query
 {
@@ -6,4 +7,13 @@ namespace Common.Query
     {
 
     }
- }
+
+    public class QueryFilter<TResponse, TParam> : IQuery<TResponse> where TResponse : BaseFilter where TParam : BaseFilterParam
+    {
+        public TParam FilterParams { set; get; }
+        public QueryFilter(TParam filterParam)
+        {
+            FilterParams = filterParam;
+        }
+    }
+}
