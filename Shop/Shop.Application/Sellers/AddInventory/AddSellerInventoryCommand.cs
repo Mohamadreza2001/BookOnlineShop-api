@@ -2,9 +2,9 @@
 
 namespace Shop.Application.Sellers.AddInventory
 {
-    public class AddInventorySellerCommand : IBaseCommand
+    public class AddSellerInventoryCommand : IBaseCommand
     {
-        public AddInventorySellerCommand(long productId, long sellerId, int count, int price, int? percentageDiscount)
+        public AddSellerInventoryCommand(long productId, long sellerId, int count, int price, int? percentageDiscount)
         {
             ProductId = productId;
             SellerId = sellerId;

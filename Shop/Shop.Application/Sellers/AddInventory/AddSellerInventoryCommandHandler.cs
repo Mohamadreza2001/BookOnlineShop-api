@@ -4,16 +4,16 @@ using Shop.Domain.SellerAgg.Repository;
 
 namespace Shop.Application.Sellers.AddInventory
 {
-    internal class AddInventorySellerCommandHandler : IBaseCommandHandler<AddInventorySellerCommand>
+    internal class AddSellerInventoryCommandHandler : IBaseCommandHandler<AddSellerInventoryCommand>
     {
         private readonly ISellerRepository _repository;
 
-        public AddInventorySellerCommandHandler(ISellerRepository repository)
+        public AddSellerInventoryCommandHandler(ISellerRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task<OperationResult> Handle(AddInventorySellerCommand request, CancellationToken cancellationToken)
+        public async Task<OperationResult> Handle(AddSellerInventoryCommand request, CancellationToken cancellationToken)
         {
             var seller = await _repository.GetTracking(request.SellerId);
             if (seller == null)

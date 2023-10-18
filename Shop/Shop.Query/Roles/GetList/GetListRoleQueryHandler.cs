@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Shop.Infrastructure.Persistent.Ef;
 using Shop.Query.Roles.DTOs;
 
-namespace Shop.Query.Roles.GetList.GetListRoleQuery
+namespace Shop.Query.Roles.GetList
 {
     internal class GetListRoleQueryHandler : IQueryHandler<GetListRoleQuery, List<RoleDto>>
     {
