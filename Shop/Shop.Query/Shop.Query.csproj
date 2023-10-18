@@ -10,7 +10,6 @@
     <Folder Include="Users\" />
     <Folder Include="Sellers\" />
     <Folder Include="Roles\" />
-    <Folder Include="Products\" />
     <Folder Include="SiteEntites\Banner\" />
     <Folder Include="SiteEntites\Slider\" />
   </ItemGroup>

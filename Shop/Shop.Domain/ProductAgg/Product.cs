@@ -9,7 +9,7 @@ namespace Shop.Domain.ProductAgg
     public class Product : AggregateRoot
     {
         public Product(string title, string imageName, string description, long categoryId, long subCategoryId,
-            long secondarySubCategoryId, string slug, CeoData ceoData, IProductDomainService domainService)
+            long? secondarySubCategoryId, string slug, CeoData ceoData, IProductDomainService domainService)
         {
             NullOrEmptyDomainDataException.CheckString(imageName, nameof(imageName));
             Guard(title, description, slug, domainService);
@@ -30,7 +30,7 @@ namespace Shop.Domain.ProductAgg
         public string Description { get; private set; }
         public long CategoryId { get; private set; }
         public long SubCategoryId { get; private set; }
-        public long SecondarySubCategoryId { get; private set; }
+        public long? SecondarySubCategoryId { get; private set; }
         public string Slug { get; private set; }
         public CeoData CeoData { get; private set; }
         public List<ProductSpecification> Specifications { get; private set; }
