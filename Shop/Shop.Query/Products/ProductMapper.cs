@@ -63,8 +63,8 @@ namespace Shop.Query.Products
 
         public static async Task SetCategories(this ProductDto product, ShopContext context)
         {
-            var category = await context.Categories
-                .Where(i => i.Id == product.Category.Id)
+            var categories = await context.Categories
+                .Where(i => i.Id == product.Category.Id || i.Id == product.SubCategory.Id)
                 .Select(i => new ProductCategoryDto()
                 {
                     Id = i.Id,
@@ -73,18 +73,7 @@ namespace Shop.Query.Products
                     CeoData = i.CeoData,
                     Title = i.Title,
                 })
-                .FirstOrDefaultAsync();
-
-            var subCategory = await context.Categories.Where(i => i.Id == product.SubCategory.Id)
-                .Select(i => new ProductCategoryDto()
-                {
-                    Id = i.Id,
-                    Slug = i.Slug,
-                    ParentId = i.ParentId,
-                    CeoData = i.CeoData,
-                    Title = i.Title,
-                })
-                .FirstOrDefaultAsync();
+                .ToListAsync();
 
             if (product.SecondarySubCategory != null)
             {
@@ -103,11 +92,9 @@ namespace Shop.Query.Products
                     product.SecondarySubCategory = secondarySubCategory;
             }
 
-            if (category != null)
-                product.Category = category;
+            product.Category = categories.First(i => i.Id == product.Category.Id);
 
-            if (subCategory != null)
-                product.SubCategory = subCategory;
+            product.SubCategory = categories.First(i => i.Id == product.SubCategory.Id);
         }
     }
 }
