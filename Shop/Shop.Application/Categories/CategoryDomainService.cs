@@ -1,12 +1,20 @@
-﻿using Shop.Domain.CategoryAgg.Services;
+﻿using Shop.Domain.CategoryAgg.Repository;
+using Shop.Domain.CategoryAgg.Services;
 
 namespace Shop.Application.Categories
 {
     public class CategoryDomainService : ICategoryDomainService
     {
+        private readonly ICategoryRepository _repository;
+
+        public CategoryDomainService(ICategoryRepository repository)
+        {
+            _repository = repository;
+        }
+
         public bool SlugIsExist(string slug)
         {
-            throw new NotImplementedException();
+            return _repository.Exists(i => i.Slug == slug);
         }
     }
 }
