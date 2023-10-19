@@ -8,7 +8,10 @@ namespace Shop.Domain.CategoryAgg
 {
     public class Category : AggregateRoot
     {
-        private Category() { }
+        private Category() 
+        {
+            Childs = new();
+        }
         public Category(string title, string slug, CeoData ceoData, ICategoryDomainService domainService)
         {
             slug = slug?.ToSlug();

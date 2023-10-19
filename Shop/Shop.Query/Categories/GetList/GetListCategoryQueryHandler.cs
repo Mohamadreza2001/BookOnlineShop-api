@@ -16,7 +16,11 @@ namespace Shop.Query.Categories.GetList
 
         public async Task<List<CategoryDto>> Handle(GetListCategoryQuery request, CancellationToken cancellationToken)
         {
-            var result = await _context.Categories.OrderByDescending(i => i.Id).ToListAsync(cancellationToken);
+            var result = await _context.Categories
+                .Where(i => i.ParentId == null)
+                .Include(i => i.Childs)
+                .ThenInclude(i => i.Childs)
+                .OrderByDescending(i => i.Id).ToListAsync(cancellationToken);
             return result.Map();
         }
     }
