@@ -3,5 +3,5 @@ using Common.Domain.ValueObjects;
 
 namespace Shop.Application.Categories.Create
 {
-    public record CreateCategoryCommand(string Title, string Slug, CeoData CeoData) : IBaseCommand;
+    public record CreateCategoryCommand(string Title, string Slug, CeoData CeoData) : IBaseCommand<long>;
 }
