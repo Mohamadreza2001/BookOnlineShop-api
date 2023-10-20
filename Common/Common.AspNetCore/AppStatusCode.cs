@@ -7,5 +7,6 @@
         BadRequest = 3,
         LogicError = 4,
         UnAuthorized = 5,
+        ServerError = 6,
     }
 }

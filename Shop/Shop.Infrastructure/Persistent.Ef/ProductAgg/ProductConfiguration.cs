@@ -68,7 +68,7 @@ namespace Shop.Infrastructure.Persistent.Ef.ProductAgg
                     .IsRequired()
                     .HasMaxLength(50);
 
-                option.Property(b => b.Key)
+                option.Property(b => b.Value)
                     .IsRequired()
                     .HasMaxLength(100);
             });
