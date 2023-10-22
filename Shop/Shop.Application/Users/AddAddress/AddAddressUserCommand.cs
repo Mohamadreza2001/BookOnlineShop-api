@@ -19,7 +19,7 @@ namespace Shop.Application.Users.AddAddress
             NationalCode = nationalCode;
         }
 
-        public long UserId { get; internal set; }
+        public long UserId { get; set; }
         public string Province { get; private set; }
         public string City { get; private set; }
         public string PostalCode { get; private set; }
