@@ -13,7 +13,7 @@ namespace Shop.Presentation.facade.Orders
         Task<OperationResult> AddItem(AddItemOrderCommand command);
         Task<OperationResult> CheckOut(CheckOutOrderCommand command);
         Task<OperationResult> DecreaseItemCount(DecreaseItemCountOrderCommand command);
-        Task<OperationResult> IncreaseItemCount(IncreaseItemCountCommand command);
+        Task<OperationResult> IncreaseItemCount(IncreaseItemCountOrderCommand command);
         Task<OperationResult> RemoveItem(RemoveItemOrderCommand command);
 
         Task<OrderDto?> GetById(long id);

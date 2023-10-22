@@ -45,7 +45,7 @@ namespace Shop.Presentation.facade.Orders
             return await _mediator.Send(new GetByIdOrderQuery(id));
         }
 
-        public async Task<OperationResult> IncreaseItemCount(IncreaseItemCountCommand command)
+        public async Task<OperationResult> IncreaseItemCount(IncreaseItemCountOrderCommand command)
         {
             return await _mediator.Send(command);
         }

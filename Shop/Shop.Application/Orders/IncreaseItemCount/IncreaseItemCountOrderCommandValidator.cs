@@ -2,9 +2,9 @@
 
 namespace Shop.Application.Orders.IncreaseItemCount
 {
-    public class IncreaseItemCountCommandValidator : AbstractValidator<IncreaseItemCountCommand>
+    public class IncreaseItemCountOrderCommandValidator : AbstractValidator<IncreaseItemCountOrderCommand>
     {
-        public IncreaseItemCountCommandValidator()
+        public IncreaseItemCountOrderCommandValidator()
         {
             RuleFor(i => i.Count).GreaterThanOrEqualTo(1).WithMessage("Count must be greater than 0");
         }
