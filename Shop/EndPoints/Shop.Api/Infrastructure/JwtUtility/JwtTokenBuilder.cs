@@ -21,7 +21,7 @@ namespace Shop.Api.Infrastructure.JwtUtility
             var token = new JwtSecurityToken(issuer: configuration["JwtConfig:Issuer"],
                 audience: configuration["JwtConfig:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddHours(4),
+                expires: DateTime.Now.AddDays(7),
                 signingCredentials: credential);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

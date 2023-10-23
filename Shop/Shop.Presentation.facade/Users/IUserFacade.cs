@@ -1,4 +1,5 @@
 ﻿using Common.Application;
+using Shop.Application.Users.AddToken;
 using Shop.Application.Users.ChargeWallet;
 using Shop.Application.Users.Create;
 using Shop.Application.Users.Edit;
@@ -13,6 +14,7 @@ namespace Shop.Presentation.facade.Users
         Task<OperationResult> Create(CreateUserCommand command);
         Task<OperationResult> Edit(EditUserCommand command);
         Task<OperationResult> Register(RegisterUserCommand command);
+        Task<OperationResult> AddToken(AddTokenUserCommand command);
 
         Task<UserFilterResult> GetByFilter(UserFilterParams filterParams);
         Task<UserDto?> GetById(long id);

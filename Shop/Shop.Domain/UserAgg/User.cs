@@ -33,6 +33,7 @@ namespace Shop.Domain.UserAgg
             Addresses = new();
             AvatarName = "avatar.png";
             IsActive = true;
+            Tokens = new();
         }
 
 
@@ -44,10 +45,10 @@ namespace Shop.Domain.UserAgg
         public string AvatarName { get; private set; }
         public bool IsActive { get; private set; }
         public Gender Gender { get; private set; }
-        public List<UserRole> Roles { get; private set; }
-        public List<Wallet> Wallets { get; private set; }
-        public List<UserAddress> Addresses { get; private set; }
-
+        public List<UserRole> Roles { get; }
+        public List<Wallet> Wallets { get; }
+        public List<UserAddress> Addresses { get; }
+        public List<UserToken> Tokens { get; }
 
 
         public static User RegisterUser(string phoneNumber, string password, IUserDomainService domainService)
@@ -107,13 +108,24 @@ namespace Shop.Domain.UserAgg
             Roles.AddRange(roles);
         }
 
+        public void AddToken(string hashedJwtToken, string hashedRefreshToken, DateTime tokenExpireDate,
+            DateTime refreshTokenExpireDate, string device)
+        {
+            var activeTokenCount = Tokens.Count(i => i.RefreshTokenExpireDate > DateTime.Now);
+            if (activeTokenCount == 3)
+                throw new InvalidDomainDataException("You can't login to this account with more than 4 devices");
+            var token = new UserToken(hashedJwtToken, hashedRefreshToken, tokenExpireDate, refreshTokenExpireDate, device);
+            token.UserId = Id;
+            Tokens.Add(token);
+        }
+
         public void Guard(string phoneNuber, string email, IUserDomainService domainService)
         {
             NullOrEmptyDomainDataException.CheckString(phoneNuber, nameof(phoneNuber));
 
             if (phoneNuber.Length != 11)
                 throw new InvalidDomainDataException("Phonenumber is not valid");
-           
+
             if (!string.IsNullOrWhiteSpace(email))
                 if (email.IsValidEmail() == false)
                     throw new InvalidDomainDataException("Email is not valid");

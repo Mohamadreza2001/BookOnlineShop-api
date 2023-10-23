@@ -4,9 +4,14 @@ using Common.AspNetCore;
 using Common.Domain.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Api.Infrastructure.JwtUtility;
+using Shop.Api.ViewModels;
 using Shop.Api.ViewModels.Auth;
+using Shop.Application.Users.AddToken;
 using Shop.Application.Users.Register;
+using Shop.Domain.UserAgg;
 using Shop.Presentation.facade.Users;
+using Shop.Query.Users.DTOs;
+using UAParser;
 
 namespace Shop.Api.Controllers
 {
@@ -21,11 +26,11 @@ namespace Shop.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ApiResult<string?>> Login(LoginViewModel loginViewModel)
+        public async Task<ApiResult<LoginResultDto>> Login(LoginViewModel loginViewModel)
         {
             if (ModelState.IsValid == false)
             {
-                return new ApiResult<string?>()
+                return new ApiResult<LoginResultDto>()
                 {
                     Data = null,
                     IsSuccess = false,
@@ -40,25 +45,21 @@ namespace Shop.Api.Controllers
             var user = await _userFacade.GetByPhoneNumber(loginViewModel.PhoneNumber);
             if (user == null)
             {
-                return CommandResult(OperationResult<string?>.Error("Phonenumber does not exist"));
+                return CommandResult(OperationResult<LoginResultDto>.Error("Phonenumber does not exist"));
             }
 
             if (Sha256Hasher.IsCompare(user.Password, loginViewModel.Password) == false)
             {
-                return CommandResult(OperationResult<string?>.Error("Password is not correct"));
+                return CommandResult(OperationResult<LoginResultDto>.Error("Password is not correct"));
             }
 
             if (user.IsActive == false)
             {
-                return CommandResult(OperationResult<string?>.Error("Your account is not active"));
+                return CommandResult(OperationResult<LoginResultDto>.Error("Your account is not active"));
             }
-            var token = JwtTokenBuilder.BuildToken(user, _configuration);
-            return new ApiResult<string?>()
-            {
-                Data = token,
-                IsSuccess = true,
-                MetaData = new(),
-            };
+
+            var loginResult = await AddTokenAndGenerateJwt(user);
+            return CommandResult(loginResult);
         }
 
         [HttpPost("register")]
@@ -79,6 +80,29 @@ namespace Shop.Api.Controllers
             }
             var command = new RegisterUserCommand(new PhoneNumber(registerViewModel.PhoneNumber), registerViewModel.Password);
             return CommandResult(await _userFacade.Register(command));
+        }
+
+        private async Task<OperationResult<LoginResultDto>> AddTokenAndGenerateJwt(UserDto user)
+        {
+            var uaParser = Parser.GetDefault();
+            var info = uaParser.Parse(HttpContext.Request.Headers["user-agent"]);
+            var device = $"{info.Device.Family}/{info.OS.Family}/{info.OS.Major}.{info.OS.Minor} - {info.UA.Family}";
+
+            var token = JwtTokenBuilder.BuildToken(user, _configuration);
+            var refreshToken = Guid.NewGuid().ToString();
+            var hashedJwtToken = Sha256Hasher.Hash(token);
+            var hashedJwtRefreshToken = Sha256Hasher.Hash(refreshToken);
+            var tokenResult = await _userFacade.AddToken(new AddTokenUserCommand(user.Id, hashedJwtToken, hashedJwtRefreshToken,
+                DateTime.Now.AddDays(7), DateTime.Now.AddDays(8), device));
+
+            if (tokenResult.Status != OperationResultStatus.Success)
+                return OperationResult<LoginResultDto>.Error();
+
+            return OperationResult<LoginResultDto>.Success(new LoginResultDto()
+            {
+                Token = token,
+                RefreshToken = refreshToken,
+            });
         }
     }
 }
