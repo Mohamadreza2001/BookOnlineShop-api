@@ -16,7 +16,7 @@ namespace Shop.Domain.UserAgg
     {
         private User()
         {
-            
+
         }
         public User(string name, string family, string phoneNumber, string email, string password, Gender gender,
             IUserDomainService domainService)
@@ -32,6 +32,7 @@ namespace Shop.Domain.UserAgg
             Wallets = new();
             Addresses = new();
             AvatarName = "avatar.png";
+            IsActive = true;
         }
 
 
@@ -41,6 +42,7 @@ namespace Shop.Domain.UserAgg
         public string Email { get; private set; }
         public string Password { get; private set; }
         public string AvatarName { get; private set; }
+        public bool IsActive { get; private set; }
         public Gender Gender { get; private set; }
         public List<UserRole> Roles { get; private set; }
         public List<Wallet> Wallets { get; private set; }
@@ -109,13 +111,12 @@ namespace Shop.Domain.UserAgg
         {
             NullOrEmptyDomainDataException.CheckString(phoneNuber, nameof(phoneNuber));
 
-            NullOrEmptyDomainDataException.CheckString(email, nameof(email));
-
             if (phoneNuber.Length != 11)
                 throw new InvalidDomainDataException("Phonenumber is not valid");
-
-            if (email.IsValidEmail() == false)
-                throw new InvalidDomainDataException("Email is not valid");
+           
+            if (!string.IsNullOrWhiteSpace(email))
+                if (email.IsValidEmail() == false)
+                    throw new InvalidDomainDataException("Email is not valid");
 
             if (phoneNuber != PhoneNumber)
                 if (domainService.IsPhoneNumberExist(phoneNuber))

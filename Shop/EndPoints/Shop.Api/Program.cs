@@ -2,6 +2,7 @@ using Common.Application;
 using Common.Application.FileUtil.Interfaces;
 using Common.Application.FileUtil.Services;
 using Common.AspNetCore.Middlewares;
+using Shop.Api.Infrastructure.JwtUtility;
 using Shop.Config;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.RegisterShopDependency(connectionString);
 CommonBootstrapper.Init(builder.Services);
 builder.Services.AddTransient<IFileService, FileService>();
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
