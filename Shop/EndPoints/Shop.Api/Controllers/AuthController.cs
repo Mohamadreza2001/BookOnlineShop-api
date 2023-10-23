@@ -21,11 +21,11 @@ namespace Shop.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ApiResult<string>> Login(LoginViewModel loginViewModel)
+        public async Task<ApiResult<string?>> Login(LoginViewModel loginViewModel)
         {
             if (ModelState.IsValid == false)
             {
-                return new ApiResult<string>()
+                return new ApiResult<string?>()
                 {
                     Data = null,
                     IsSuccess = false,
@@ -40,20 +40,20 @@ namespace Shop.Api.Controllers
             var user = await _userFacade.GetByPhoneNumber(loginViewModel.PhoneNumber);
             if (user == null)
             {
-                return CommandResult(OperationResult<string>.Error("Phonenumber does not exist"));
+                return CommandResult(OperationResult<string?>.Error("Phonenumber does not exist"));
             }
 
             if (Sha256Hasher.IsCompare(user.Password, loginViewModel.Password) == false)
             {
-                return CommandResult(OperationResult<string>.Error("Password is not correct"));
+                return CommandResult(OperationResult<string?>.Error("Password is not correct"));
             }
 
             if (user.IsActive == false)
             {
-                return CommandResult(OperationResult<string>.Error("Your account is not active"));
+                return CommandResult(OperationResult<string?>.Error("Your account is not active"));
             }
             var token = JwtTokenBuilder.BuildToken(user, _configuration);
-            return new ApiResult<string>()
+            return new ApiResult<string?>()
             {
                 Data = token,
                 IsSuccess = true,
