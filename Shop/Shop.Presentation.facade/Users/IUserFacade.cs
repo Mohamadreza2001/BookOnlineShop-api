@@ -21,6 +21,7 @@ namespace Shop.Presentation.facade.Users
         Task<UserFilterResult> GetByFilter(UserFilterParams filterParams);
         Task<UserDto?> GetById(long id);
         Task<UserTokenDto?> GetUserTokenByRefreshToken(string refreshToken);
+        Task<UserTokenDto?> GetUserTokenByJwtToken(string jwtToken);
         Task<UserDto?> GetByPhoneNumber(string phoneNumber);
     }
 }
