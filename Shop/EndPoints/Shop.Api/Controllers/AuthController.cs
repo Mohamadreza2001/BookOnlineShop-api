@@ -8,6 +8,7 @@ using Shop.Api.ViewModels;
 using Shop.Api.ViewModels.Auth;
 using Shop.Application.Users.AddToken;
 using Shop.Application.Users.Register;
+using Shop.Application.Users.RemoveToken;
 using Shop.Domain.UserAgg;
 using Shop.Presentation.facade.Users;
 using Shop.Query.Users.DTOs;
@@ -80,6 +81,30 @@ namespace Shop.Api.Controllers
             }
             var command = new RegisterUserCommand(new PhoneNumber(registerViewModel.PhoneNumber), registerViewModel.Password);
             return CommandResult(await _userFacade.Register(command));
+        }
+
+        [HttpPost("refreshToken")]
+        public async Task<ApiResult<LoginResultDto?>> RefreshToken(string refreshToken)
+        {
+            var result = await _userFacade.GetUserTokenByRefreshToken(refreshToken);
+
+            if (result == null)
+                return CommandResult(OperationResult<LoginResultDto?>.NotFound());
+
+            if (result.TokenExpireDate > DateTime.Now)
+            {
+                return CommandResult(OperationResult<LoginResultDto?>.Error("Token is already valid"));
+            }
+
+            if (result.TokenExpireDate < DateTime.Now)
+            {
+                return CommandResult(OperationResult<LoginResultDto?>.Error("Refresh token time is expired"));
+            }
+
+            var user = await _userFacade.GetById(result.UserId);
+            await _userFacade.RemoveToken(new RemoveTokenUserCommand(result.UserId, result.Id));
+            var loginResult = await AddTokenAndGenerateJwt(user);
+            return CommandResult(loginResult);
         }
 
         private async Task<OperationResult<LoginResultDto>> AddTokenAndGenerateJwt(UserDto user)

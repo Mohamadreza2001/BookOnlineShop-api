@@ -119,6 +119,14 @@ namespace Shop.Domain.UserAgg
             Tokens.Add(token);
         }
 
+        public void RemoveToken(long tokenId)
+        {
+            var token = Tokens.FirstOrDefault(i => i.Id == tokenId);
+            if (token == null)
+                throw new InvalidDomainDataException("Invalid token id");
+            Tokens.Remove(token);
+        }
+
         public void Guard(string phoneNuber, string email, IUserDomainService domainService)
         {
             NullOrEmptyDomainDataException.CheckString(phoneNuber, nameof(phoneNuber));

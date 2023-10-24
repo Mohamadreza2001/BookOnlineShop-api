@@ -5,9 +5,12 @@ namespace Shop.Domain.UserAgg
 {
     public class UserToken : BaseEntity
     {
+        private UserToken() { }
+
         public UserToken(string hashedJwtToken, string hashedRefreshToken, DateTime tokenExpireDate,
             DateTime refreshTokenExpireDate, string device)
         {
+            Guard(hashedJwtToken, hashedRefreshToken, tokenExpireDate, refreshTokenExpireDate, device);
             HashedJwtToken = hashedJwtToken;
             HashedRefreshToken = hashedRefreshToken;
             TokenExpireDate = tokenExpireDate;
@@ -20,17 +23,18 @@ namespace Shop.Domain.UserAgg
         public string HashedRefreshToken { get; private set; }
         public DateTime TokenExpireDate { get; private set; }
         public DateTime RefreshTokenExpireDate { get; private set; }
-        public string Device { get; set; }
+        public string Device { get; private set; }
 
-        public void Guard()
+        public void Guard(string hashedJwtToken, string hashedRefreshToken, DateTime tokenExpireDate,
+            DateTime refreshTokenExpireDate, string device)
         {
-            NullOrEmptyDomainDataException.CheckString(HashedJwtToken, nameof(HashedJwtToken));
-            NullOrEmptyDomainDataException.CheckString(HashedRefreshToken, nameof(HashedRefreshToken));
+            NullOrEmptyDomainDataException.CheckString(hashedJwtToken, nameof(HashedJwtToken));
+            NullOrEmptyDomainDataException.CheckString(hashedRefreshToken, nameof(HashedRefreshToken));
 
-            if (TokenExpireDate < DateTime.Now)
+            if (tokenExpireDate < DateTime.Now)
                 throw new InvalidDomainDataException("Invalid Token ExpireDate");
 
-            if (RefreshTokenExpireDate < TokenExpireDate)
+            if (refreshTokenExpireDate < TokenExpireDate)
                 throw new InvalidDomainDataException("Invalid RefreshToken ExpireDate");
         }
     }

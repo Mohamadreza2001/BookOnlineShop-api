@@ -20,7 +20,7 @@ namespace Shop.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ApiResult<UserFilterResult>> GetUserByFilter(UserFilterParams filterParams)
+        public async Task<ApiResult<UserFilterResult>> GetUserByFilter([FromQuery] UserFilterParams filterParams)
         {
             return QueryResult(await _userFacade.GetByFilter(filterParams));
         }

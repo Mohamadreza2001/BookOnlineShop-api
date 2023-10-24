@@ -48,6 +48,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("ShopApi");
+
 app.UseAuthentication();
 
 app.UseAuthorization();

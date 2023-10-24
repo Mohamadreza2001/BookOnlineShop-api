@@ -4,6 +4,7 @@ using Shop.Application.Users.ChargeWallet;
 using Shop.Application.Users.Create;
 using Shop.Application.Users.Edit;
 using Shop.Application.Users.Register;
+using Shop.Application.Users.RemoveToken;
 using Shop.Query.Users.DTOs;
 
 namespace Shop.Presentation.facade.Users
@@ -15,9 +16,11 @@ namespace Shop.Presentation.facade.Users
         Task<OperationResult> Edit(EditUserCommand command);
         Task<OperationResult> Register(RegisterUserCommand command);
         Task<OperationResult> AddToken(AddTokenUserCommand command);
+        Task<OperationResult> RemoveToken(RemoveTokenUserCommand command);
 
         Task<UserFilterResult> GetByFilter(UserFilterParams filterParams);
         Task<UserDto?> GetById(long id);
+        Task<UserTokenDto?> GetUserTokenByRefreshToken(string refreshToken);
         Task<UserDto?> GetByPhoneNumber(string phoneNumber);
     }
 }
