@@ -1,15 +1,18 @@
 ﻿using Common.AspNetCore;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shop.Api.Infrastructure.Security;
 using Shop.Application.Users.ChargeWallet;
 using Shop.Application.Users.Create;
 using Shop.Application.Users.Edit;
 using Shop.Application.Users.Register;
+using Shop.Domain.RoleAgg.Enums;
 using Shop.Presentation.facade.Users;
 using Shop.Query.Users.DTOs;
 
 namespace Shop.Api.Controllers
 {
+    [Authorize]
     public class UserController : ApiController
     {
         private readonly IUserFacade _userFacade;
@@ -19,12 +22,14 @@ namespace Shop.Api.Controllers
             _userFacade = userFacade;
         }
 
+        [PermissionChecker(Permission.User_Management)]
         [HttpGet]
         public async Task<ApiResult<UserFilterResult>> GetUserByFilter([FromQuery] UserFilterParams filterParams)
         {
             return QueryResult(await _userFacade.GetByFilter(filterParams));
         }
 
+        [PermissionChecker(Permission.User_Management)]
         [HttpGet("{userId}")]
         public async Task<ApiResult<UserDto?>> GetUserById(long userId)
         {
@@ -37,12 +42,14 @@ namespace Shop.Api.Controllers
             return QueryResult(await _userFacade.GetByPhoneNumber(phoneNumber));
         }
 
+        [PermissionChecker(Permission.User_Management)]
         [HttpPost]
         public async Task<ApiResult> CreateUser(CreateUserCommand command)
         {
             return CommandResult(await _userFacade.Create(command));
         }
 
+        [PermissionChecker(Permission.User_Management)]
         [HttpPut]
         public async Task<ApiResult> EditUser(EditUserCommand command)
         {
