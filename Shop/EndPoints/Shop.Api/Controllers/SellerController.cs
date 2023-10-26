@@ -1,4 +1,5 @@
 ﻿using Common.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Api.Infrastructure.Security;
@@ -37,6 +38,13 @@ namespace Shop.Api.Controllers
             return QueryResult(await _sellerFacade.GetById(sellerId));
         }
 
+        [Authorize]
+        [HttpGet("current")]
+        public async Task<ApiResult<SellerDto?>> GetSeller()
+        {
+            return QueryResult(await _sellerFacade.GetSellerByUserId(User.GetUserId()));
+        }
+
         [PermissionChecker(Permission.Add_Inventory)]
         [HttpPost("addInventory")]
         public async Task<ApiResult> AddSellerInventory(AddSellerInventoryCommand command)
@@ -63,6 +71,33 @@ namespace Shop.Api.Controllers
         public async Task<ApiResult> EditSellerInventory(EditSellerInventoryCommand command)
         {
             return CommandResult(await _sellerInventoryFacade.EditInventory(command));
+        }
+
+        [HttpGet("inventories")]
+        [PermissionChecker(Permission.Seller_Panel)]
+        public async Task<ApiResult<List<InventoryDto>>> GetInventories()
+        {
+            var seller = await _sellerFacade.GetSellerByUserId(User.GetUserId());
+            if (seller == null)
+                return QueryResult(new List<InventoryDto>());
+
+            var result = await _sellerInventoryFacade.GetList(seller.Id);
+            return QueryResult(result);
+        }
+
+        [HttpGet("inventories/{inventoryId}")]
+        [PermissionChecker(Permission.Seller_Panel)]
+        public async Task<ApiResult<InventoryDto>> GetInventories(long inventoryId)
+        {
+            var seller = await _sellerFacade.GetSellerByUserId(User.GetUserId());
+            if (seller == null)
+                return QueryResult(new InventoryDto());
+
+            var result = await _sellerInventoryFacade.GetById(inventoryId);
+            if (result == null || result.SellerId != seller.Id)
+                return QueryResult(new InventoryDto());
+
+            return QueryResult(result);
         }
     }
 }

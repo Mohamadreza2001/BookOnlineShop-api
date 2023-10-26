@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shop.Domain.ProductAgg;
-using System.Runtime;
 
 namespace Shop.Infrastructure.Persistent.Ef.ProductAgg
 {

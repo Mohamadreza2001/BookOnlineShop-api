@@ -10,7 +10,7 @@ namespace Shop.Api.Infrastructure
             services.AddTransient<CustomJwtValidation>();
             services.AddCors(options =>
             {
-                options.AddPolicy(name: "ShopApi", i => i.AllowAnyOrigin().AllowAnyMethod());
+                options.AddPolicy(name: "ShopApi", i => i.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
         }
     }
