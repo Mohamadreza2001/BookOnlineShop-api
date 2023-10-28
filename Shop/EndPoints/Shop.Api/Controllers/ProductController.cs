@@ -10,6 +10,7 @@ using Shop.Application.Products.RemoveImage;
 using Shop.Domain.RoleAgg.Enums;
 using Shop.Presentation.facade.Products;
 using Shop.Query.Products.DTOs;
+using Shop.Query.Products.DTOs.ProductShop;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
@@ -30,6 +31,13 @@ namespace Shop.Api.Controllers
         public async Task<ApiResult<ProductFilterResult>> GetProductByFilter([FromQuery] ProductFilterParams filterParams)
         {
             return QueryResult(await _productFacade.GetByFilter(filterParams));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("shop")]
+        public async Task<ApiResult<ProductShopResult>> GetProductForShopFilter([FromQuery] ProductShopFilterParam filterParam)
+        {
+            return QueryResult(await _productFacade.GetProductsForShop(filterParam));
         }
 
         [AllowAnonymous]

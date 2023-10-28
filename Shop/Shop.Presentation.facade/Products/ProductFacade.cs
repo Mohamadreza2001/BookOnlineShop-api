@@ -5,9 +5,11 @@ using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
 using Shop.Application.Products.RemoveImage;
 using Shop.Query.Products.DTOs;
+using Shop.Query.Products.DTOs.ProductShop;
 using Shop.Query.Products.GetByFilter;
 using Shop.Query.Products.GetById;
 using Shop.Query.Products.GetBySlug;
+using Shop.Query.Products.GetForShop;
 
 namespace Shop.Presentation.facade.Products
 {
@@ -48,6 +50,11 @@ namespace Shop.Presentation.facade.Products
         public async Task<ProductDto?> GetBySlug(string productSlug)
         {
             return await _mediator.Send(new GetBySlugProductQuery(productSlug));
+        }
+
+        public async Task<ProductShopResult> GetProductsForShop(ProductShopFilterParam filterParams)
+        {
+            return await _mediator.Send(new GetProductsForShopQuery(filterParams));
         }
 
         public async Task<OperationResult> RemoveImage(RemoveImageProductCommand command)

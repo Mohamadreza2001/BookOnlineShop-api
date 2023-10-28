@@ -4,6 +4,7 @@ using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
 using Shop.Application.Products.RemoveImage;
 using Shop.Query.Products.DTOs;
+using Shop.Query.Products.DTOs.ProductShop;
 
 namespace Shop.Presentation.facade.Products
 {
@@ -15,6 +16,7 @@ namespace Shop.Presentation.facade.Products
         Task<OperationResult> RemoveImage(RemoveImageProductCommand command);
 
         Task<ProductFilterResult> GetByFilter(ProductFilterParams filterParams);
+        Task<ProductShopResult> GetProductsForShop(ProductShopFilterParam filterParams);
         Task<ProductDto?> GetById(long id);
         Task<ProductDto?> GetBySlug(string productSlug);
     }

@@ -29,6 +29,12 @@ namespace Shop.Api.Controllers
             return QueryResult(await _userFacade.GetByFilter(filterParams));
         }
 
+        [HttpGet("current")]
+        public async Task<ApiResult<UserDto?>> GetCurrentUser()
+        {
+            return QueryResult(await _userFacade.GetById(User.GetUserId()));
+        }
+
         [PermissionChecker(Permission.User_Management)]
         [HttpGet("{userId}")]
         public async Task<ApiResult<UserDto?>> GetUserById(long userId)
