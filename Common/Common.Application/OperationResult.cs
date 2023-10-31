@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Common.Application
+﻿namespace Common.Application
 {
     public class OperationResult<TData>
     {
@@ -49,8 +43,8 @@ namespace Common.Application
         public const string SuccessMessage = "Successfully done";
         public const string ErrorMessage = "Failed to finish the operation";
         public const string NotFoundMessage = "Not found";
-        public string Message { get; set; }
-        public string Title { get; set; } = null;
+        public string Message { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
         public OperationResultStatus Status { get; set; }
 
         public static OperationResult Error()

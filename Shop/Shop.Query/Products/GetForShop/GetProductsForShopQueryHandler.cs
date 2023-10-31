@@ -80,13 +80,13 @@ namespace Shop.Query.Products.GetForShop
 
             var skip = (@params.PageId - 1) * @params.Take;
             var sql = @$"SELECT Count(A.Title)
-            FROM (Select p.Title , i.Price  , i.Id as InventoryId , i.DiscountPercentage , i.Count,
-                        p.CategoryId,p.SubCategoryId,p.SecondarySubCategoryId, p.Id as Id , s.Status
-                            ,ROW_NUMBER() OVER(PARTITION BY p.Id ORDER BY {inventoryOrderBy} ) AS RN
-            From {_dapperContext.Products} p
-            left join {_dapperContext.Inventories} i on p.Id=i.ProductId
-            left join {_dapperContext.Sellers} s on i.SellerId=s.Id)A
-            WHERE  A.RN = 1 and A.Status=@status  {conditions}";
+                FROM (Select p.Title, i.Price, i.Id as InventoryId, i.DiscountPercentage, i.Count,
+                p.CategoryId, p.SubCategoryId, p.SecondarySubCategoryId, p.Id as Id, s.Status,
+                ROW_NUMBER() OVER( PARTITION BY p.Id ORDER BY {inventoryOrderBy} ) AS RN
+                From {_dapperContext.Products} p
+                left join {_dapperContext.Inventories} i on p.Id=i.ProductId
+                left join {_dapperContext.Sellers} s on i.SellerId=s.Id ) A
+                WHERE  A.RN = 1 and A.Status=@status  {conditions}";
 
 
             var resultSql = @$"SELECT A.Slug,A.Id ,A.Title,A.Price,A.InventoryId,A.DiscountPercentage,A.ImageName

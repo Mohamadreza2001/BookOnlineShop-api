@@ -1,4 +1,5 @@
 ﻿using Common.Query.Filter;
+using Shop.Query.Products.DTOs.ProductShop.Enum;
 
 namespace Shop.Query.Products.DTOs.ProductShop
 {
