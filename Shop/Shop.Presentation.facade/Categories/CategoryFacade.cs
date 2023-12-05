@@ -8,7 +8,6 @@ using Shop.Query.Categories.DTOs;
 using Shop.Query.Categories.GetById;
 using Shop.Query.Categories.GetByParentId;
 using Shop.Query.Categories.GetList;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Shop.Presentation.facade.Categories
 {

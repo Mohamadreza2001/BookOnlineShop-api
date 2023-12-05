@@ -25,16 +25,23 @@ namespace Shop.Application.Products.Create
         public async Task<OperationResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             var imageName = await _fileService.SaveFileAndGenerateName(request.ImageFile, Directories.ProductImages);
+            
             var product = new Product(request.Title, imageName, request.Description, request.CategoryId, request.SubCategoryId,
                 request.SecondarySubCategoryId, request.Slug, request.CeoData, _domainService);
+            
             _repository.Add(product);
+            
             var specifications = new List<ProductSpecification>();
+           
             request.Specifications.ToList().ForEach(i =>
             {
                 specifications.Add(new ProductSpecification(i.Key, i.Value));
             });
+            
             product.SetSpecification(specifications);
+            
             await _repository.Save();
+           
             return OperationResult.Success();
         }
     }

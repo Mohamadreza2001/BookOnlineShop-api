@@ -1,6 +1,8 @@
 ﻿using Common.Application;
 using Common.Application.SecurityUtil;
+using Common.CacheHelper;
 using MediatR;
+using Microsoft.Extensions.Caching.Distributed;
 using Shop.Application.Users.AddToken;
 using Shop.Application.Users.ChargeWallet;
 using Shop.Application.Users.Create;
@@ -19,10 +21,12 @@ namespace Shop.Presentation.facade.Users
     internal class UserFacade : IUserFacade
     {
         private readonly IMediator _mediator;
+        private readonly IDistributedCache _distributedCache;
 
-        public UserFacade(IMediator mediator)
+        public UserFacade(IMediator mediator, IDistributedCache distributedCache)
         {
             _mediator = mediator;
+            _distributedCache = distributedCache;
         }
 
         public async Task<OperationResult> AddToken(AddTokenUserCommand command)
@@ -42,7 +46,10 @@ namespace Shop.Presentation.facade.Users
 
         public async Task<OperationResult> Edit(EditUserCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+            if (result.Status == OperationResultStatus.Success)
+                await _distributedCache.RemoveAsync(CacheKeys.User(command.UserId));
+            return result;
         }
 
         public async Task<UserFilterResult> GetByFilter(UserFilterParams filterParams)
@@ -52,7 +59,10 @@ namespace Shop.Presentation.facade.Users
 
         public async Task<UserDto?> GetById(long id)
         {
-            return await _mediator.Send(new GetByIdUserQuery(id));
+            return await _distributedCache.GetOrSet(CacheKeys.User(id), () =>
+            {
+                return _mediator.Send(new GetByIdUserQuery(id));
+            });
         }
 
         public async Task<UserDto?> GetByPhoneNumber(string phoneNumber)

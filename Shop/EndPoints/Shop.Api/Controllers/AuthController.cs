@@ -97,7 +97,7 @@ namespace Shop.Api.Controllers
                 return CommandResult(OperationResult<LoginResultDto?>.Error("Token is already valid"));
             }
 
-            if (result.TokenExpireDate < DateTime.Now)
+            if (result.RefreshTokenExpireDate < DateTime.Now)
             {
                 return CommandResult(OperationResult<LoginResultDto?>.Error("Refresh token time is expired"));
             }
