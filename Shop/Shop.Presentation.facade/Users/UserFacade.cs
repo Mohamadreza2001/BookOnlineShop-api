@@ -73,7 +73,10 @@ namespace Shop.Presentation.facade.Users
         public async Task<UserTokenDto?> GetUserTokenByJwtToken(string jwtToken)
         {
             var hashJwtToken = Sha256Hasher.Hash(jwtToken);
-            return await _mediator.Send(new GetUserTokenByJwtTokenQuery(hashJwtToken));
+            return await _distributedCache.GetOrSet(CacheKeys.UserToken(hashJwtToken), () =>
+            {
+                return _mediator.Send(new GetUserTokenByJwtTokenQuery(hashJwtToken));
+            });
         }
 
         public async Task<UserTokenDto?> GetUserTokenByRefreshToken(string refreshToken)
@@ -89,7 +92,11 @@ namespace Shop.Presentation.facade.Users
 
         public async Task<OperationResult> RemoveToken(RemoveTokenUserCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+            if (result.Status != OperationResultStatus.Success)
+                return OperationResult.Error();
+            await _distributedCache.RemoveAsync(CacheKeys.UserToken(result.Data));
+            return OperationResult.Success();
         }
     }
 }
