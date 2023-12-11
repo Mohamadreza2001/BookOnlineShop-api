@@ -1,4 +1,5 @@
 #region Libraries
+using AspNetCoreRateLimit;
 using Common.Application;
 using Common.Application.FileUtil.Interfaces;
 using Common.Application.FileUtil.Services;
@@ -67,7 +68,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.RegisterShopDependency(connectionString);
 
-builder.Services.RegisterApiDependency();
+builder.Services.RegisterApiDependency(builder.Configuration);
 
 CommonBootstrapper.Init(builder.Services);
 
@@ -88,6 +89,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseIpRateLimiting();
 
 app.UseHttpsRedirection();
 
