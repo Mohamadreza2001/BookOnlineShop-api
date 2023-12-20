@@ -7,7 +7,6 @@ using Common.AspNetCore;
 using Common.AspNetCore.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Shop.Api.Infrastructure;
 using Shop.Api.Infrastructure.JwtUtility;

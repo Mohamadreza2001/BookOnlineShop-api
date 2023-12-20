@@ -1,6 +1,5 @@
 ﻿using Shop.Domain.CategoryAgg;
 using Shop.Query.Categories.DTOs;
-using System.Runtime.CompilerServices;
 
 namespace Shop.Query.Categories
 {
